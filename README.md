@@ -1,2 +1,1 @@
-# joheos111
-1
+# Licencia GNU
