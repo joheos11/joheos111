@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<menus>
+  
+<menus_info>
+<title>[COLOR red]Kodi[/COLOR][COLOR yellow]Spain[/COLOR][COLOR red]Tv[/COLOR]</title>
+<genre>ALL</genre>
+<description>Canales de Televisión, deportes y más...</description>
+<thumbnail>https://i.imgur.com/Px871XF.jpg</thumbnail>
+<fanart>https://i.imgur.com/P9rlq5c.jpg</fanart>
+<credits>SERES DE LUZ</credits>
+</menus_info>
+
+
+<menu>
+<title>[B][COLOR white]TDTCHANNELS[/COLOR][/B]</title>
+<link>$doregex[groupname]</link>
+<regex>
+<name>select</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data,Cookie_Jar,m):
+  import xbmcgui
+  dialog = xbmcgui.Dialog()  
+  opt = dialog.select('Elige una lista:', ['Televisión', 'Radio'])  
+  list = ['https://www.tdtchannels.com/lists/tv.m3u', 'https://www.tdtchannels.com/lists/radio.m3u']
+  return list[opt] 
+]]></expres>
+<page></page>
+</regex>
+<regex>
+<name>groupname</name>
+<listrepeat><![CDATA[
+  <title>[groupname.param1]</title>
+  <link>$doregex[tvchannels]</link>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+import re,requests
+def GetLSProData(page_data,Cookie_Jar,m):
+  list = requests.get('$doregex[select]').text
+  match = re.compile('group-title="([^"]+)"').findall(list)
+  seccion_list = []
+  for x in match:
+    if x not in seccion_list:
+      seccion_list.append(x)
+  return seccion_list
+]]></expres>
+<page></page>
+</regex>
+<regex>
+<name>tvchannels</name>
+<listrepeat><![CDATA[
+  <title>[tvchannels.param3]</title>
+  <link>[tvchannels.param4]</link>
+  <thumbnail>[tvchannels.param1]</thumbnail>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+import re, requests
+def GetLSProData(page_data,Cookie_Jar,m):
+  list = requests.get('https://www.tdtchannels.com/lists/tvradio.m3u').text
+  data = re.findall('EXTINF.*tvg-logo="([^"]+)".group-title="[groupname.param1]".tvg-name="([^"]+)",(.*)\n(.*)',list)
+  return sorted(data, key=lambda match: match[1])
+]]></expres>
+<page></page>
+</regex>
+<thumbnail>https://i.postimg.cc/xd9nkC7D/46137909-1.jpg</thumbnail>
+<fanart>https://i.postimg.cc/Jnrbj7xC/Spain-flag-1.jpg</fanart>
+</menu>
+
+<menu>
+<title>[B][COLOR white]ACESTREAM ELCANO + NEW ERA + NEW LOOP [/COLOR][/B]</title> 
+<link>nolink</link>
+<externallink>http://127.0.0.1:43110/1H3KoazXt2gCJgeD8673eFvQYXG7cbRddU/lista-ott.m3u</externallink>
+<thumbnail>https://pbs.twimg.com/profile_images/3439640730/57c17b000072c3880ba869813617c6c6_400x400.png</thumbnail>
+<fanart>https://i.imgur.com/3zk1XTz.jpg</fanart>
+</menu>
+
+
+
+<!-- 
+<menu>
+<title>[COLOR red]Kodi[/COLOR][COLOR yellow]Spain[/COLOR][COLOR red]Tv[/COLOR]         [COLOR yellow]por[/COLOR] [COLOR red]@[/COLOR][COLOR yellow]joheos11[/COLOR]</title>
+<link>https://gitlab.com/konectas2/kodispaintv/-/raw/main/mainmenu_menu</link>
+<thumbnail>https://i.imgur.com/Px871XF.jpg</thumbnail>
+<fanart>https://i.imgur.com/P9rlq5c.jpg</fanart>
+</menu>
+  
+<menu>
+<title>[B][COLOR white]CANALES DE ESPAÑA[/COLOR][/B]</title>
+<link>$doregex[channel]</link>
+<regex>
+<name>channel</name>
+<listrepeat><![CDATA[
+  <title>[B][COLOR white][channel.param1][/COLOR][/B]</title>
+  <link>[channel.param2]?n=1&amp;b=5&amp;vavoo_auth=$doregex[key]|user-Agent:VAVOO/2.6</link>
+  <thumbnail>https://i.imgur.com/Sa2zYk5.jpg</thumbnail>
+  <fanart>https://i.postimg.cc/W4NGHypV/Canales-de-Espa-a.jpg</fanart>
+]]></listrepeat>
+<expres><![CDATA[group.*?"Spain".*?name":"(.*?)\(\d\)".*?"(http.*?)"]]></expres>
+<page>https://www2.vavoo.to/live2/index</page>     
+</regex>
+<regex>
+<name>key</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data,Cookie_Jar,m):
+	import requests, random
+	veclist = requests.get("https://raw.githubusercontent.com/michaz1988/michaz1988.github.io/master/data.json").json()
+	sig = None
+	i = 0
+	while (not sig and i < 50):
+		i+=1
+		vec = {"vec": random.choice(veclist)}
+		req = requests.post('https://www.vavoo.tv/api/box/ping2', data=vec).json()
+		if req.get('signed'):
+			sig = req['signed']
+		elif req.get('data', {}).get('signed'):
+			sig = req['data']['signed']
+		elif req.get('response', {}).get('signed'):
+			sig = req['response']['signed']
+	return sig
+]]></expres>
+<page></page>
+</regex> 
+<thumbnail>https://i.imgur.com/Sa2zYk5.jpg</thumbnail>
+<fanart>https://i.postimg.cc/W4NGHypV/Canales-de-Espa-a.jpg</fanart>
+</menu>
+
+<menu>
+<title>[B][COLOR white]CANALES INTERNACIONALES[/COLOR][/B]</title>
+<link>$doregex[country]</link>
+<regex>
+<name>country</name>
+<listrepeat><![CDATA[
+  <title>[B][COLOR white][country.param1][/COLOR][/B]</title>
+  <link>$doregex[channel]</link>
+  <thumbnail>https://i.imgur.com/r2Hkc3s.png</thumbnail>
+  <fanart>https://i.postimg.cc/dDPpXs9V/UyNxG3U.jpg</fanart>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data,Cookie_Jar,m):
+	import requests
+	req = requests.get("https://www2.vavoo.to/live2/index").json()
+	countries = []
+	for group in req:
+		country = group["group"]
+		if country not in countries:
+			countries.append(country)
+	return sorted(countries) 
+]]></expres>
+<page></page>
+</regex>
+<regex>
+<name>channel</name>
+<listrepeat><![CDATA[
+  <title>[B][COLOR white][channel.param1][/COLOR][/B]</title>
+  <link>[channel.param2]?n=1&amp;b=5&amp;vavoo_auth=$doregex[key]|user-Agent:VAVOO/2.6</link>
+  <thumbnail>https://i.imgur.com/r2Hkc3s.png</thumbnail>
+  <fanart>https://i.postimg.cc/dDPpXs9V/UyNxG3U.jpg</fanart>
+]]></listrepeat>
+<expres><![CDATA[group.*?"[country.param1]".*?name":"(.*?)\(\d\)".*?"(http.*?)"]]></expres>
+<page>https://www2.vavoo.to/live2/index</page>     
+</regex>
+<regex>
+<name>key</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data,Cookie_Jar,m):
+	import requests, random
+	veclist = requests.get("https://raw.githubusercontent.com/michaz1988/michaz1988.github.io/master/data.json").json()
+	sig = None
+	i = 0
+	while (not sig and i < 50):
+		i+=1
+		vec = {"vec": random.choice(veclist)}
+		req = requests.post('https://www.vavoo.tv/api/box/ping2', data=vec).json()
+		if req.get('signed'):
+			sig = req['signed']
+		elif req.get('data', {}).get('signed'):
+			sig = req['data']['signed']
+		elif req.get('response', {}).get('signed'):
+			sig = req['response']['signed']
+	return sig
+]]></expres>
+<page></page>
+</regex>
+<thumbnail>https://i.imgur.com/r2Hkc3s.png</thumbnail>
+<fanart>https://i.postimg.cc/dDPpXs9V/UyNxG3U.jpg</fanart>
+</menu>
+
+<menu>  
+<title>[B][COLOR white]DEPORTES[/COLOR][/B]</title>
+<link>nolink</link>
+<thumbnail>https://i.postimg.cc/cJ0ZCmwL/Sozt4fH.jpg</thumbnail>
+<fanart>https://i.imgur.com/3zk1XTz.jpg</fanart> 
+<externallink>https://gitlab.com/konectas2/kodispaintv/-/raw/main/Deportes</externallink>
+</menu>
+
+<menu>
+<title>[B][COLOR white]LISTAS IPTV[/COLOR][/B]</title>
+<link>nolink</link>
+<thumbnail>https://i.postimg.cc/sfqr7y78/bMJG1bN.png</thumbnail>
+<fanart>https://i.postimg.cc/dDPpXs9V/UyNxG3U.jpg</fanart>
+<externallink>https://gitlab.com/konectas2/kodispaintv/-/raw/main/listasiptv</externallink>
+</menu>
+
+<menu>
+<title>[B][COLOR white]PHOTOCALL TV[/COLOR][/B]</title>
+<thumbnail>https://i.postimg.cc/Dwg1DNYK/photocall.png</thumbnail>
+<fanart>https://i.postimg.cc/V5yMC6q1/snWFe76.jpg</fanart>
+<link>nolink</link>
+<externallink>https://gitlab.com/konectas2/kodispaintv/-/raw/main/Photocall</externallink>
+</menu>
+
+<menu>
+<title>[B][COLOR white]PLUTO TV[/COLOR][/B]</title>
+<link>nolink</link>
+<thumbnail>https://i.postimg.cc/L4x0N9qR/plutotv.png</thumbnail>
+<fanart>https://i.postimg.cc/3RTJSjcy/plutotv.jpg</fanart>
+<externallink>https://gitlab.com/konectas2/kodispaintv/-/raw/main/plutotv</externallink>
+</menu>
+ 
+<menu>
+<title>[B][COLOR white]SAMSUNG TV PLUS[/COLOR][/B]</title>
+<link>nolink</link>
+<thumbnail>https://i.postimg.cc/DZphy31z/samsungtvplus.png</thumbnail>
+<fanart>https://i.postimg.cc/sXCzM4Nk/samsungtvplus.jpg</fanart>
+<externallink>https://gitlab.com/konectas2/kodispaintv/-/raw/main/SamsungTvPlus</externallink>
+</menu>
+
+<menu>
+<title>[B][COLOR white]RADIO[/COLOR][/B]</title>
+<link>nolink</link>
+<thumbnail>https://i.postimg.cc/L5p4mFcn/Radio.png</thumbnail>
+<fanart>https://s15.postimg.cc/jkastdbhn/fondoradios.jpg</fanart>
+<externallink>https://gitlab.com/konectas2/kodispaintv/-/raw/main/radio</externallink>
+</menu>
+
+<menu>
+<title>[B][COLOR yellow]En Mantenimiento.[/COLOR][/B]</title>
+<link>https://gitlab.com/konectas2/kodispaintv/-/raw/main/mainmenu_menu</link>
+<thumbnail>https://i.pinimg.com/originals/3b/77/b9/3b77b9cf378da4c6a505c053e1ddf313.png</thumbnail>
+<fanart>https://wallpapers.com/images/hd/metal-background-xp67opmtfejwml52.jpg</fanart>
+</menu>
+
+<menu>
+<title>[B][COLOR white]ACESTREAM SPANISH [/COLOR][/B]</title> 
+<link>$doregex[makelist]</link>
+<regex>
+<name>makelist</name>
+<listrepeat><![CDATA[
+  <title>[B][COLOR white][makelist.param3][/COLOR][/B]</title>
+  <link>[makelist.param1]</link>
+  <thumbnail>[makelist.param2]</thumbnail>
+  <fanart>https://i.imgur.com/3zk1XTz.jpg</fanart>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    DB_ID = "60911fbf01f9ac001530be3c"
+    data = requests.get(
+        "https://kodispaintv-server.vercel.app/api/productos").json()
+    productos = list(
+        filter(lambda producto: producto["categoria"]["_id"] == DB_ID and producto["estado"], data["productos"]))
+    return [(f"http://127.0.0.1:6878/ace/getstream?id={producto['enlace']}" if not producto['enlace'].startswith("http") else producto["enlace"], producto["imagen"], producto["nombre"])
+            for producto in productos]
+]]></expres>
+<page></page>
+</regex>
+<thumbnail>https://pbs.twimg.com/profile_images/3439640730/57c17b000072c3880ba869813617c6c6_400x400.png</thumbnail>
+<fanart>https://i.imgur.com/3zk1XTz.jpg</fanart>
+</menu>
+
+<menu>
+<title>[B][COLOR white]CANALES TV &amp; EVENTOS[/COLOR][/B]</title> 
+<link>$doregex[makelist]</link>
+<regex>
+<name>makelist</name>
+<listrepeat><![CDATA[
+  <title>[B][COLOR white][makelist.param3][/COLOR][/B]</title>
+  <link>[makelist.param1]</link>
+  <thumbnail>[makelist.param2]</thumbnail>
+  <fanart>https://i.imgur.com/3zk1XTz.jpg</fanart>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    DB_ID = "60911fd601f9ac001530be3d"
+    data = requests.get(
+        "https://kodispaintv-server.vercel.app/api/productos").json()
+    productos = list(
+        filter(lambda producto: producto["categoria"]["_id"] == DB_ID and producto["estado"], data["productos"]))
+    return [(f"http://127.0.0.1:6878/ace/getstream?id={producto['enlace']}" if not producto['enlace'].startswith("http") else producto["enlace"], producto["imagen"], producto["nombre"])
+            for producto in productos]
+]]></expres>
+<page></page>
+</regex>
+<thumbnail>https://imgur.com/hA9zzTs.png</thumbnail>
+<fanart>https://i.imgur.com/3zk1XTz.jpg</fanart>
+</menu> -->
+
+</menus>
