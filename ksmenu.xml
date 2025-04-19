@@ -13,7 +13,7 @@
 
 
 <menu>
-<title>[B][COLOR white]TDTCHANNELS  [/COLOR][B][COLOR white]ON[/COLOR][/B]</title>
+<title>[B][COLOR white]TDTCHANNELS  [/COLOR][B][COLOR lime]ON[/COLOR][/B]</title>
 <link>$doregex[groupname]</link>
 <regex>
 <name>select</name>
