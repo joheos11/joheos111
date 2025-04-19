@@ -69,7 +69,23 @@ def GetLSProData(page_data,Cookie_Jar,m):
 <menu>
 <title>[B][COLOR white]ACESTREAM ELCANO + NEW ERA + NEW LOOP [/COLOR][/B]</title> 
 <link>nolink</link>
-<externallink>http://127.0.0.1:43110/1H3KoazXt2gCJgeD8673eFvQYXG7cbRddU/lista-ott.m3u</externallink>
+<externallink>https://raw.githubusercontent.com/ezdakit/zerrendak/refs/heads/master/zerrendak/kanalak_ott.m3u</externallink>
+<thumbnail>https://pbs.twimg.com/profile_images/3439640730/57c17b000072c3880ba869813617c6c6_400x400.png</thumbnail>
+<fanart>https://i.imgur.com/3zk1XTz.jpg</fanart>
+</menu>
+
+<menu>
+<title>[B][COLOR white]ACESTREAM ELCANO + NEW ERA + NEW LOOP [/COLOR][COLOR red](AGENDA)[/COLOR][/B]</title> 
+<link>nolink</link>
+<externallink>https://raw.githubusercontent.com/ezdakit/zerrendak/refs/heads/master/zerrendak/ekitaldiak.m3u</externallink>
+<thumbnail>https://pbs.twimg.com/profile_images/3439640730/57c17b000072c3880ba869813617c6c6_400x400.png</thumbnail>
+<fanart>https://i.imgur.com/3zk1XTz.jpg</fanart>
+</menu>
+
+<menu>
+<title>[B][COLOR white]ACESTREAM ELCANO + NEW ERA + NEW LOOP [/COLOR][COLOR red](HORUS)[/COLOR][/B]</title> 
+<link>nolink</link>
+<externallink>https://raw.githubusercontent.com/ezdakit/zerrendak/refs/heads/master/zerrendak/kanalak_kodi.m3u</externallink>
 <thumbnail>https://pbs.twimg.com/profile_images/3439640730/57c17b000072c3880ba869813617c6c6_400x400.png</thumbnail>
 <fanart>https://i.imgur.com/3zk1XTz.jpg</fanart>
 </menu>
